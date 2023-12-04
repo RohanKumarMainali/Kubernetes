@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug
+spec:
+  containers:
+    - name: container1
+      image: debian
+      command:
+        - sleep
+        - "1d"
+      volumeMounts:
+        - mountPath: /config
+          name: config-volume
+  volumes:
+    - name: config-volume
+      configMap:
+        name: my-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  .production.env: |
+    VALUE1=VALUE1
+    VALUE2=VALUE2
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+stringData:
+  my-file: |
+    VALUE1=VALUE1
+    VALUE2=VALUE2
